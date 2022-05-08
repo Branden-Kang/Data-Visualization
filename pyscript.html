@@ -1,0 +1,63 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+    <py-env>
+        - matplotlib
+				- bokeh
+    </py-env>
+</head>
+<body>
+    <h1>Matplotlib</h1>
+    <py-script> print("My Lineplot")</py-script>
+		<py-script output="lineplot">
+			import matplotlib.pyplot as plt
+
+			fig, ax = plt.subplots()
+
+			year_1 = [2016, 2017, 2018, 2019, 2020, 2021]
+			population_1 = [42, 43, 45, 47, 48, 50]
+
+			year_2 = [2016, 2017, 2018, 2019, 2020, 2021]
+			population_2 = [43, 43, 44, 44, 45, 45]
+
+			plt.plot(year_1, population_1, marker='o', linestyle='--', color='g', label='Country 1')
+			plt.plot(year_2, population_2,  marker='d', linestyle='-', color='r', label='Country 2')
+
+			plt.xlabel('Year')
+			plt.ylabel('Population (M)')
+			plt.title('Year vs Population')
+			plt.legend(loc='lower right')
+
+			fig
+		</py-script>
+		<h1>Bokeh</h1>
+    <div id="myplot"></div>
+		<py-script id="main">
+import json
+import pyodide
+
+from js import Bokeh, console, JSON
+
+from bokeh.embed import json_item
+from bokeh.plotting import figure
+from bokeh.resources import CDN
+
+# create a new plot with default tools, using figure
+p = figure(plot_width=400, plot_height=400)
+
+# add a circle renderer with x and y coordinates, size, color, and alpha
+p.circle([1, 2, 3, 4, 5], [6, 7, 2, 4, 5], size=15, line_color="navy", fill_color="orange", fill_alpha=0.5)
+p_json = json.dumps(json_item(p, "myplot"))
+
+Bokeh.embed.embed_item(JSON.parse(p_json))
+    </py-script>
+
+</body>
+</html>
